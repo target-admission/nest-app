@@ -12,7 +12,7 @@ import {
 import { AccesspointService } from './accesspoint.service';
 import { CreateAccesspointDto } from './dto/create-accesspoint.dto';
 import { UpdateAccesspointDto } from './dto/update-accesspoint.dto';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import {
   IPaginationQuery,
   LimitQuery,
