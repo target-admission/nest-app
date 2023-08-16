@@ -17,7 +17,7 @@ import User from 'src/users/entities/user.entity';
 @Table({
   tableName: 'user_session',
 })
-class Session extends Model<Session> {
+class UserSession extends Model<UserSession> {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.BIGINT)
@@ -79,4 +79,4 @@ class Session extends Model<Session> {
   'deleted_at': Date;
 }
 
-export default Session;
+export default UserSession;

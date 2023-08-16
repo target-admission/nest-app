@@ -7,10 +7,11 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import User from 'src/users/entities/user.entity';
+import Employee from 'src/employees/entities/employee.entity';
+import Role from 'src/roles/entities/role.entity';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -32,12 +33,17 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    const user = await User.findOne({
+    const employee = await Employee.findOne({
       where: {
         id: payload.sub,
         /* verified_at: {
                 [Op.ne]: null,
             }, */
+      },
+      include: {
+        model: Role,
+        as: 'role',
+        attributes: ['id', 'name'],
       },
       attributes: {
         exclude: ['password'],
@@ -45,22 +51,22 @@ export class AuthGuard implements CanActivate {
       paranoid: false,
     });
 
-    if (!user)
+    if (!employee)
       throw new NotFoundException(
         'No user found. Contact administration about your account.',
       );
 
-    if (user.deleted_at)
+    if (employee.deleted_at)
       throw new UnauthorizedException(
-        `Your account was archived on ${user.deleted_at.toDateString()}. Contact with administration.`,
+        `Your account was archived on ${employee.deleted_at.toDateString()}. Contact with administration.`,
       );
 
-    if (!user.is_active)
+    if (!employee.is_active)
       throw new UnauthorizedException(
         'Your account is temporarily suspended. Contact with administration.',
       );
 
-    const sessions = await user.$get('sessions', {
+    const sessions = await employee.$get('sessions', {
       where: {
         jwt: token,
       },
@@ -75,7 +81,7 @@ export class AuthGuard implements CanActivate {
         `This session is signed out at ${session.logged_out_at?.toDateString()}. Please sign in again.`,
       );
 
-    request['user'] = user;
+    request['user'] = employee;
     request['jwt_token'] = token;
 
     return true;

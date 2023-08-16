@@ -1,6 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import Pagination from 'src/utils/Pagination';
-import Session from './entities/session.entity';
+import Session from './entities/employee-session.entity';
 import Employee from 'src/employees/entities/employee.entity';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
 
@@ -55,6 +59,8 @@ export class SessionsService {
     // find session
     const session = await Session.findByPk(id);
 
+    if (!session) throw new NotFoundException('No session found.');
+
     // check if already logged out
     if (session?.logged_out_at !== null)
       throw new UnauthorizedException('This session is already signed out.');
@@ -72,6 +78,8 @@ export class SessionsService {
   async remove(id: number) {
     // find session
     const session = await Session.findByPk(id);
+
+    if (!session) throw new NotFoundException('No session available.');
 
     // check if already logged out
     if (session?.logged_out_at === null) {

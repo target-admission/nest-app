@@ -1,12 +1,16 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import Pagination from 'src/utils/Pagination';
-import Session from './entities/session.entity';
-import Employee from 'src/employees/entities/employee.entity';
+import Session from './entities/user-session.entity';
+import User from 'src/users/entities/user.entity';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
 
 @Injectable()
 export class SessionsService {
-  async findAll(query: IPaginationQuery, employee?: number) {
+  async findAll(query: IPaginationQuery, user?: number) {
     const pagination = new Pagination(query);
 
     // get query props
@@ -20,7 +24,7 @@ export class SessionsService {
 
     // get filter props
     const filters = pagination.format_filters({
-      user_id: employee,
+      user_id: user,
     });
 
     return pagination.arrange(
@@ -30,7 +34,7 @@ export class SessionsService {
           ...filters,
         },
         include: {
-          model: Employee,
+          model: User,
           as: 'user',
           attributes: [
             'id',
@@ -55,6 +59,8 @@ export class SessionsService {
     // find session
     const session = await Session.findByPk(id);
 
+    if (!session) throw new NotFoundException('No session found.');
+
     // check if already logged out
     if (session?.logged_out_at !== null)
       throw new UnauthorizedException('This session is already signed out.');
@@ -72,6 +78,8 @@ export class SessionsService {
   async remove(id: number) {
     // find session
     const session = await Session.findByPk(id);
+
+    if (!session) throw new NotFoundException('No session available.');
 
     // check if already logged out
     if (session?.logged_out_at === null) {

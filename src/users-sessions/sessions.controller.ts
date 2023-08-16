@@ -11,14 +11,14 @@ import {
 } from 'src/utils/Pagination/dto/query.dto';
 
 @ApiTags('Sessions')
-@Controller('sessions')
+@Controller('sessions/users')
 export class SessionsController {
   constructor(private readonly sessionsService: SessionsService) {}
 
   @Get()
   // Filter Queries
   @ApiQuery({
-    name: 'employee',
+    name: 'user',
     type: 'number',
     required: false,
   })
@@ -28,11 +28,8 @@ export class SessionsController {
   @ApiQuery(PageQuery)
   @ApiQuery(LimitQuery)
   @ApiQuery(SearchQuery)
-  findAll(
-    @Query() query: IPaginationQuery,
-    @Query('employee') employee?: number,
-  ) {
-    return this.sessionsService.findAll(query, employee);
+  findAll(@Query() query: IPaginationQuery, @Query('user') user?: number) {
+    return this.sessionsService.findAll(query, user);
   }
 
   @Put(':id')

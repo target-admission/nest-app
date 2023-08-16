@@ -26,16 +26,11 @@ export class EmployeesService {
             'email',
             'phone',
             'dob',
-            'hired_date',
-            'work_hour',
-            'salary',
-            'bank',
             'address',
           ],
         },
       );
       return {
-        statusCode: 201,
         message: `${data.first_name} registered as an employee successfully`,
       };
     } catch (error) {
@@ -117,11 +112,7 @@ export class EmployeesService {
       gender,
       email,
       dob,
-      hired_date,
       role_id,
-      work_hour,
-      salary,
-      bank,
       address,
     } = updateEmployeeDto;
 
@@ -138,11 +129,7 @@ export class EmployeesService {
       gender,
       email,
       dob,
-      hired_date,
-      work_hour,
-      salary,
       role_id,
-      bank,
       address,
     });
 

@@ -17,7 +17,7 @@ import Employee from 'src/employees/entities/employee.entity';
 @Table({
   tableName: 'employee_session',
 })
-class Session extends Model<Session> {
+class EmployeeSession extends Model<EmployeeSession> {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.BIGINT)
@@ -79,4 +79,4 @@ class Session extends Model<Session> {
   'deleted_at': Date;
 }
 
-export default Session;
+export default EmployeeSession;

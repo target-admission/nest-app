@@ -4,16 +4,17 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { EmployeesModule } from './employees/employees.module';
 import { ConfigModule } from '@nestjs/config';
+import { PermissionsModule } from './permissions/permissions.module';
+import { RolesModule } from './roles/roles.module';
+import { AccesspointModule } from './accesspoint/accesspoint.module';
+import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
+import { SessionsModule as EmployeeSessionsModule } from './employees-sessions/sessions.module';
+import { UsersModule } from './users/users.module';
+import { SessionsModule as UserSessionsModule } from './users-sessions/sessions.module';
 // import { GraphQLModule } from '@nestjs/graphql';
 // import { ApolloDriver } from '@nestjs/apollo';
 // import { join } from 'path';
-import { RolesModule } from './roles/roles.module';
-import { PermissionsModule } from './permissions/permissions.module';
-import { AccesspointModule } from './accesspoint/accesspoint.module';
-import { AuthModule } from './auth/auth.module';
-import { SessionsModule } from './employees-sessions/sessions.module';
-import { UsersModule } from './users/users.module';
-import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -31,13 +32,15 @@ import { UsersModule } from './users/users.module';
     //   // typePaths: ['./**/*.graphql'], // Manually Read GraphQL File
     // }),
     DatabaseModule,
-    EmployeesModule,
     AuthModule,
-    SessionsModule,
+    AdminModule,
+    UsersModule,
+    UserSessionsModule,
+    EmployeesModule,
+    EmployeeSessionsModule,
     AccesspointModule,
     RolesModule,
     PermissionsModule,
-    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

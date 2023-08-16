@@ -18,7 +18,7 @@ import {
 } from 'sequelize-typescript';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
-import Session from 'src/users-sessions/entities/session.entity';
+import Session from 'src/users-sessions/entities/user-session.entity';
 
 @Table({
   tableName: 'user',

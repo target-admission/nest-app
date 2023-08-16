@@ -1,6 +1,4 @@
 import {
-  HttpException,
-  HttpStatus,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -16,57 +14,19 @@ const geoip = require('geoip-lite');
 const bcrypt = require('bcrypt');
 
 import { JwtService } from '@nestjs/jwt';
+import Employee from 'src/employees/entities/employee.entity';
+import Session from 'src/employees-sessions/entities/employee-session.entity';
 import { Op } from 'sequelize';
-import { RegisterDto } from './dto/register.dto';
-import User from 'src/users/entities/user.entity';
-import UserSession from 'src/users-sessions/entities/user-session.entity';
 
 @Injectable()
 export class AuthService {
   constructor(private jwtService: JwtService) {}
 
-  async signup(registerDto: RegisterDto) {
-    try {
-      await User.create(
-        {
-          ...registerDto,
-        },
-        {
-          fields: [
-            'first_name',
-            'last_name',
-            'username',
-            'password',
-            'gender',
-            'email',
-            'phone',
-            'dob',
-            'address',
-          ],
-        },
-      );
-      return {
-        message: `An OTP sent to ${registerDto.phone}. Please verify to continue.`,
-      };
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          error: 'Failed to create employee',
-        },
-        HttpStatus.BAD_REQUEST,
-        {
-          cause: error,
-        },
-      );
-    }
-  }
-
   // Store Session
   async storeSession(jwt: string, id: number, ip?: string) {
     // find geo location for ip address
     const geo = geoip.lookup(ip);
-    await UserSession.create({
+    await Session.create({
       jwt,
       user_id: id,
       address_details:
@@ -82,7 +42,7 @@ export class AuthService {
 
   // Login Employee
   async login(loginDto: LoginDto, ip: string) {
-    const employee = await User.findOne({
+    const employee = await Employee.findOne({
       where: {
         phone: loginDto.phone,
       },
@@ -159,7 +119,7 @@ export class AuthService {
   // Update employee information
   async update(user: any, updateAuthDto: UpdateAuthDto) {
     // Find employee
-    const employee = await User.findByPk(user.id);
+    const employee = await Employee.findByPk(user.id);
 
     // Check if employee exists
     if (!employee)
@@ -178,7 +138,7 @@ export class AuthService {
 
   async resetpass(user: any, resetPassDto: ResetPassDto) {
     // Find employee
-    const employee = await User.findByPk(user.id);
+    const employee = await Employee.findByPk(user.id);
 
     // Compare password
     if (
@@ -200,7 +160,7 @@ export class AuthService {
   // Signout
   async signout(jwt_token: string) {
     // find session
-    const session = await UserSession.findOne({
+    const session = await Session.findOne({
       where: {
         jwt: jwt_token,
       },

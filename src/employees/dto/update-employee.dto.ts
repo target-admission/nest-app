@@ -31,17 +31,5 @@ export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
   dob: Date;
 
   @ApiProperty()
-  hired_date: Date;
-
-  @ApiProperty()
-  work_hour: number;
-
-  @ApiProperty()
-  salary: number;
-
-  @ApiProperty()
-  bank: string;
-
-  @ApiProperty()
   address: string;
 }

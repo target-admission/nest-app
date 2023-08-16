@@ -11,7 +11,7 @@ import {
 } from 'src/utils/Pagination/dto/query.dto';
 
 @ApiTags('Sessions')
-@Controller('sessions')
+@Controller('sessions/employees')
 export class SessionsController {
   constructor(private readonly sessionsService: SessionsService) {}
 

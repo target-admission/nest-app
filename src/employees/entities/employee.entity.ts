@@ -21,7 +21,7 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
 import Role from 'src/roles/entities/role.entity';
-import Session from 'src/employees-sessions/entities/session.entity';
+import Session from 'src/employees-sessions/entities/employee-session.entity';
 
 @Table({
   tableName: 'employee',
@@ -65,25 +65,11 @@ class Employee extends Model<Employee> {
   @Column
   'dob': Date;
 
-  @Column
-  'hired_date': Date;
-
-  @Default(8)
-  @Column
-  'work_hour': number;
-
-  @Default(0)
-  @Column
-  'salary': number;
-
-  @Column
-  'bank': string;
-
   @AllowNull
   @Column
   'address': string;
 
-  @Default(2)
+  @Default(4)
   @Column
   'max_session': number;
 
