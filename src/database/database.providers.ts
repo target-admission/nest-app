@@ -22,9 +22,16 @@ export const databaseProviders = [
         },
         logging: false,
       });
-      await sequelize.sync({
-        // force: true,
-      });
+      await sequelize
+        .sync({
+          // force: true,
+        })
+        .then(() => {
+          console.log(
+            'Database connected to: ',
+            process.env.DB_HOST || 'localhost',
+          );
+        });
       return sequelize;
     },
   },
