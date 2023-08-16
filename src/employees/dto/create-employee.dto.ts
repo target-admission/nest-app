@@ -42,19 +42,4 @@ export class CreateEmployeeDto {
 
   @ApiProperty()
   address: string;
-
-  //   @ApiProperty()
-  //   is_active: boolean;
-
-  //   @ApiProperty()
-  //   verified_at: Date;
-
-  //   @ApiProperty()
-  //   created_at: Date;
-
-  //   @ApiProperty()
-  //   updated_at: Date;
-
-  //   @ApiProperty()
-  //   deleted_at: Date;
 }

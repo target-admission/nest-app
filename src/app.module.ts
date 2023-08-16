@@ -11,7 +11,8 @@ import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { AccesspointModule } from './accesspoint/accesspoint.module';
 import { AuthModule } from './auth/auth.module';
-import { SessionsModule } from './sessions/sessions.module';
+import { SessionsModule } from './employees-sessions/sessions.module';
+import { UsersModule } from './users/users.module';
 import { UsersModule } from './users/users.module';
 
 @Module({

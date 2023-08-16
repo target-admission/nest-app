@@ -21,7 +21,7 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
 import Role from 'src/roles/entities/role.entity';
-import Session from 'src/sessions/entities/session.entity';
+import Session from 'src/employees-sessions/entities/session.entity';
 
 @Table({
   tableName: 'employee',

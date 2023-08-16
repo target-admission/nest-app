@@ -15,7 +15,7 @@ const bcrypt = require('bcrypt');
 
 import { JwtService } from '@nestjs/jwt';
 import Employee from 'src/employees/entities/employee.entity';
-import Session from 'src/sessions/entities/session.entity';
+import Session from 'src/employees-sessions/entities/session.entity';
 import { Op } from 'sequelize';
 
 @Injectable()

@@ -12,10 +12,10 @@ import {
   ForeignKey,
   Model,
 } from 'sequelize-typescript';
-import Employee from 'src/employees/entities/employee.entity';
+import User from 'src/users/entities/user.entity';
 
 @Table({
-  tableName: 'session',
+  tableName: 'user_session',
 })
 class Session extends Model<Session> {
   @PrimaryKey
@@ -23,13 +23,13 @@ class Session extends Model<Session> {
   @Column(DataType.BIGINT)
   'id': number;
 
-  @ForeignKey(() => Employee)
+  @ForeignKey(() => User)
   @AllowNull
   @Column(DataType.BIGINT)
   'user_id': number;
 
-  @BelongsTo(() => Employee)
-  'user': Employee;
+  @BelongsTo(() => User)
+  'user': User;
 
   @Column
   'jwt': string;
