@@ -6,8 +6,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Hello Lead? - API')
-    .setDescription('Lead Management System + Sales Management CRM')
+    .setTitle('Target Admission - API')
+    .setDescription('Main Backend Service of the Application')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
