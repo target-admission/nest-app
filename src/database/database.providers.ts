@@ -31,6 +31,12 @@ export const databaseProviders = [
             'Database connected to: ',
             process.env.DB_HOST || 'localhost',
           );
+        })
+        .catch(() => {
+          console.log(
+            'Database failed to connect: ',
+            process.env.DB_HOST || 'localhost',
+          );
         });
       return sequelize;
     },
