@@ -3,33 +3,53 @@ import { CreateEmployeeDto } from './create-employee.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   first_name: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   last_name: string;
 
-  @ApiProperty()
-  username: string;
-
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   gender?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   role_id: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   display_picture: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   phone: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   dob: Date;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   address: string;
+
+  @ApiProperty({
+    required: false,
+  })
+  max_session?: number;
 }

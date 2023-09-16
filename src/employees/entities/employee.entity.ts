@@ -46,6 +46,7 @@ class Employee extends Model<Employee> {
   @Column
   'password': string;
 
+  @Default('Male')
   @Column(DataType.ENUM('Male', 'Female', 'Non Binary'))
   'gender': string;
 
@@ -62,6 +63,7 @@ class Employee extends Model<Employee> {
   @Column
   'phone': string;
 
+  @AllowNull
   @Column
   'dob': Date;
 

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -7,14 +11,31 @@ import Pagination from 'src/utils/Pagination';
 import Role from 'src/roles/entities/role.entity';
 import { Op } from 'sequelize';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class EmployeesService {
+  async create_username(name: string) {
+    const id = (await Employee.findOne({
+      where: { username: name },
+      paranoid: false,
+    }))
+      ? `.${nanoid(3)}`
+      : '';
+
+    const username = `${name.toLowerCase().replace(/\s/g, '')}${id}`;
+    while (await Employee.findOne({ where: { username } })) {
+      return this.create_username(name);
+    }
+    return username;
+  }
+
   async create(data: CreateEmployeeDto) {
     try {
       await Employee.create(
         {
           ...data,
+          username: await this.create_username(data.last_name),
         },
         {
           fields: [
@@ -27,6 +48,8 @@ export class EmployeesService {
             'phone',
             'dob',
             'address',
+            'max_session',
+            'role_id',
           ],
         },
       );
@@ -51,7 +74,8 @@ export class EmployeesService {
     const pagination = new Pagination(query);
 
     // get query props
-    const { limit, offset, paranoid } = pagination.get_attributes();
+    const { limit, offset, paranoid, trash_query } =
+      pagination.get_attributes();
 
     // get search object
     const search_ops = pagination.get_search_ops([
@@ -59,6 +83,8 @@ export class EmployeesService {
       'last_name',
       'username',
       'phone',
+      'email',
+      'address',
     ]);
 
     // get filter props
@@ -71,11 +97,12 @@ export class EmployeesService {
         where: {
           [Op.or]: search_ops,
           ...filters,
+          ...trash_query,
         },
         include: {
           model: Role,
           as: 'role',
-          attributes: ['id', 'name'],
+          attributes: ['id', 'name', 'prefix'],
         },
         attributes: {
           exclude: ['password', 'role_id'],
@@ -89,6 +116,11 @@ export class EmployeesService {
 
   async findOne(id: number) {
     const employee = await Employee.findByPk(id, {
+      include: {
+        model: Role,
+        as: 'role',
+        attributes: ['id', 'name', 'prefix'],
+      },
       attributes: {
         exclude: ['password'],
       },
@@ -108,12 +140,12 @@ export class EmployeesService {
     const {
       first_name,
       last_name,
-      username,
       gender,
       email,
       dob,
       role_id,
       address,
+      max_session,
     } = updateEmployeeDto;
 
     const employee = await Employee.findByPk(id, {});
@@ -125,12 +157,12 @@ export class EmployeesService {
     await employee.update({
       first_name,
       last_name,
-      username,
       gender,
       email,
       dob,
       role_id,
       address,
+      max_session,
     });
 
     return {
@@ -159,7 +191,33 @@ export class EmployeesService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} employee`;
+  async remove(id: number, permanent?: boolean, restore?: boolean) {
+    const employee = await Employee.findByPk(id, {
+      paranoid: false,
+    });
+
+    if (!employee) {
+      throw new NotFoundException(`Employee not found`);
+    }
+
+    if (permanent) {
+      employee.destroy({ force: true });
+      return {
+        message: `Employee deleted permanently.`,
+      };
+    } else if (restore) {
+      if (employee.deleted_at === null)
+        throw new BadRequestException(`Employee not deleted`);
+      employee.restore();
+      return {
+        message: 'Employee restored successfully',
+      };
+    }
+
+    await employee.destroy();
+
+    return {
+      message: 'Employee deleted successfully',
+    };
   }
 }

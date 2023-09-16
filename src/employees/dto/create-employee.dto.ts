@@ -7,27 +7,45 @@ export class CreateEmployeeDto {
   @ApiProperty()
   last_name: string;
 
-  @ApiProperty()
-  username: string;
+  // @ApiProperty()
+  // username: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: ['Male', 'Female', 'Non Binary'],
+  })
   gender?: string;
 
   @ApiProperty()
   password: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   display_picture?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   email?: string;
 
   @ApiProperty()
   phone: string;
 
-  @ApiProperty()
-  dob: Date;
+  @ApiProperty({
+    format: 'date',
+    required: false,
+  })
+  dob?: Date;
+
+  @ApiProperty({
+    default: 2,
+    required: false,
+  })
+  max_session?: number;
 
   @ApiProperty()
-  address: string;
+  address?: string;
+
+  @ApiProperty()
+  role_id?: number;
 }

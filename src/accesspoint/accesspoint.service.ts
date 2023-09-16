@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -44,12 +45,14 @@ export class AccesspointService {
 
   async findAll(query: IPaginationQuery) {
     const pagination = new Pagination(query);
-    const { limit, offset, paranoid } = pagination.get_attributes();
+    const { limit, offset, paranoid, trash_query } =
+      pagination.get_attributes();
     const search_ops = pagination.get_search_ops(['point_name']);
     return pagination.arrange(
       await AccessPoint.findAndCountAll({
         where: {
           [Op.or]: search_ops,
+          ...trash_query,
         },
 
         limit,
@@ -60,7 +63,9 @@ export class AccesspointService {
   }
 
   public async findOne(id: number) {
-    const point = await AccessPoint.findByPk(id, {});
+    const point = await AccessPoint.findByPk(id, {
+      paranoid: false,
+    });
     if (!point) {
       throw new NotFoundException('No point name found!');
     }
@@ -83,7 +88,34 @@ export class AccesspointService {
     return 'Information updated successfully';
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} accesspoint`;
+  async remove(id: number, permanent?: boolean, restore?: boolean) {
+    const point = await AccessPoint.findByPk(id, {
+      paranoid: false,
+    });
+    if (!point) {
+      throw new NotFoundException(`No point found!`);
+    }
+
+    if (permanent) {
+      await point.destroy({ force: true });
+      return {
+        message: 'Point deleted permanently',
+      };
+    } else if (restore) {
+      if (!point.deleted_at)
+        throw new BadRequestException(`Point is not deleted`);
+
+      await point.restore();
+
+      return {
+        message: 'Point restored successfully',
+      };
+    }
+
+    await point.destroy();
+
+    return {
+      message: 'Point deleted successfully',
+    };
   }
 }
