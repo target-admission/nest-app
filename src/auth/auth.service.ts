@@ -20,16 +20,32 @@ import { Op } from 'sequelize';
 import { RegisterDto } from './dto/register.dto';
 import User from 'src/users/entities/user.entity';
 import UserSession from 'src/users-sessions/entities/user-session.entity';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class AuthService {
   constructor(private jwtService: JwtService) {}
+  async create_username(name: string) {
+    const id = (await User.findOne({
+      where: { username: name },
+      paranoid: false,
+    }))
+      ? `.${nanoid(3)}`
+      : '';
+
+    const username = `${name.toLowerCase().replace(/\s/g, '')}${id}`;
+    while (await User.findOne({ where: { username } })) {
+      return this.create_username(name);
+    }
+    return username;
+  }
 
   async signup(registerDto: RegisterDto) {
     try {
       await User.create(
         {
           ...registerDto,
+          username: await this.create_username(registerDto.last_name),
         },
         {
           fields: [

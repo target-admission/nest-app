@@ -8,9 +8,6 @@ export class RegisterDto {
   last_name: string;
 
   @ApiProperty()
-  username: string;
-
-  @ApiProperty()
   gender?: string;
 
   @ApiProperty()
