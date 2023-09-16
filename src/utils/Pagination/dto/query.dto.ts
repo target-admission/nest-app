@@ -6,6 +6,7 @@ export type IPaginationQuery = {
   page: number;
   sort: string;
   show_paranoid: boolean;
+  trash: boolean;
 };
 
 // Query
@@ -36,6 +37,12 @@ export const SortQuery: ApiQueryOptions = {
 
 export const ShowParanoidQuery: ApiQueryOptions = {
   name: 'show_paranoid',
+  type: 'boolean',
+  required: false,
+};
+
+export const TrashQuery: ApiQueryOptions = {
+  name: 'trash',
   type: 'boolean',
   required: false,
 };

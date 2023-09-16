@@ -10,10 +10,12 @@ class Pagination {
   public show_paranoid = true;
   public sort?: string;
   public literal_fields: string[] = [];
+  public is_trash?: boolean;
+  public trash_query?: any;
 
   constructor(query: IPaginationQuery, literal_fields: string[] = []) {
     try {
-      const { search, limit, page, sort, show_paranoid } = query;
+      const { search, limit, page, sort, show_paranoid, trash } = query;
       this.sort = sort ? this.replaceAll(sort?.toString(), ' ', '') : undefined;
       this.limit =
         limit && parseInt(limit?.toString()) ? parseInt(limit?.toString()) : 10;
@@ -25,10 +27,16 @@ class Pagination {
       this.skip = (this.page - 1) * this.limit;
       this.literal_fields = literal_fields;
 
-      this.show_paranoid =
-        show_paranoid !== null && show_paranoid !== undefined
-          ? this.toBoolean(show_paranoid)
-          : true;
+      this.is_trash =
+        trash !== null && trash !== undefined ? this.toBoolean(trash) : false;
+
+      this.show_paranoid = this.is_trash
+        ? false
+        : show_paranoid !== null && show_paranoid !== undefined
+        ? this.toBoolean(show_paranoid)
+        : true;
+
+      this.trash_query = this.is_trash ? { deleted_at: { [Op.ne]: null } } : {};
     } catch (_err: any) {
       throw new HttpException(
         'problem constructing pagination',
@@ -70,6 +78,8 @@ class Pagination {
       limit: this.limit,
       order: this.order(literal_fields),
       paranoid: this.show_paranoid,
+      trash_query: this.trash_query,
+      is_trash: this.is_trash,
     };
   }
 
