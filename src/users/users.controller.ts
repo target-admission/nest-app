@@ -17,6 +17,7 @@ import {
   SearchQuery,
   ShowParanoidQuery,
   SortQuery,
+  TrashQuery,
 } from 'src/utils/Pagination/dto/query.dto';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
@@ -27,6 +28,7 @@ export class UsersController {
 
   @Get()
   // Pagination Queries
+  @ApiQuery(TrashQuery)
   @ApiQuery(ShowParanoidQuery)
   @ApiQuery(SortQuery)
   @ApiQuery(PageQuery)
@@ -51,9 +53,22 @@ export class UsersController {
     return this.usersService.activeInactive(+id);
   }
 
-  @ApiOperation({ deprecated: true })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @ApiQuery({
+    name: 'permanent',
+    type: 'boolean',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'restore',
+    type: 'boolean',
+    required: false,
+  })
+  remove(
+    @Param('id') id: string,
+    @Query('permanent') permanent?: boolean,
+    @Query('restore') restore?: boolean,
+  ) {
+    return this.usersService.remove(+id, permanent, restore);
   }
 }

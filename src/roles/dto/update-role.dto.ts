@@ -6,5 +6,8 @@ export class UpdateRoleDto extends PartialType(CreateRoleDto) {
   name: string;
 
   @ApiProperty()
+  prefix: string;
+
+  @ApiProperty()
   description: string;
 }

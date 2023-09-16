@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
 import Pagination from 'src/utils/Pagination';
@@ -11,7 +15,8 @@ export class UsersService {
     const pagination = new Pagination(query);
 
     // get query props
-    const { limit, offset, paranoid } = pagination.get_attributes();
+    const { limit, offset, paranoid, trash_query } =
+      pagination.get_attributes();
 
     // get search object
     const search_ops = pagination.get_search_ops([
@@ -19,6 +24,8 @@ export class UsersService {
       'last_name',
       'username',
       'phone',
+      'email',
+      'address',
     ]);
 
     // // get filter props
@@ -31,6 +38,7 @@ export class UsersService {
         where: {
           [Op.or]: search_ops,
           // ...filters,
+          ...trash_query,
         },
         attributes: {
           exclude: ['password'],
@@ -60,7 +68,7 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const { first_name, last_name, username, gender, email, dob, address } =
+    const { first_name, last_name, gender, email, dob, address } =
       updateUserDto;
 
     const user = await User.findByPk(id, {});
@@ -72,7 +80,6 @@ export class UsersService {
     await user.update({
       first_name,
       last_name,
-      username,
       gender,
       email,
       dob,
@@ -105,7 +112,33 @@ export class UsersService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number, permanent?: boolean, restore?: boolean) {
+    const user = await User.findByPk(id, {
+      paranoid: false,
+    });
+
+    if (!user) {
+      throw new NotFoundException('No user found!');
+    }
+
+    if (permanent) {
+      await user.destroy({ force: true });
+      return {
+        message: 'User deleted successfully',
+      };
+    } else if (restore) {
+      if (!user.deleted_at) throw new BadRequestException('User not deleted');
+
+      await user.restore();
+      return {
+        message: 'User restored successfully',
+      };
+    }
+
+    await user.destroy();
+
+    return {
+      message: 'User deleted successfully',
+    };
   }
 }

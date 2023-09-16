@@ -20,6 +20,7 @@ import {
   SearchQuery,
   ShowParanoidQuery,
   SortQuery,
+  TrashQuery,
 } from 'src/utils/Pagination/dto/query.dto';
 
 @ApiTags('Permissions')
@@ -46,6 +47,7 @@ export class PermissionsController {
     required: false,
   })
   // Pagination Queries
+  @ApiQuery(TrashQuery)
   @ApiQuery(ShowParanoidQuery)
   @ApiQuery(SortQuery)
   @ApiQuery(PageQuery)

@@ -5,5 +5,8 @@ export class CreateRoleDto {
   name: string;
 
   @ApiProperty()
+  prefix: string;
+
+  @ApiProperty()
   description: string;
 }

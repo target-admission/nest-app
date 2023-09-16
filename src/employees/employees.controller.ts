@@ -71,7 +71,6 @@ export class EmployeesController {
     return this.employeesService.activeInactive(+id);
   }
 
-  @ApiOperation({ deprecated: true })
   @Delete(':id')
   @ApiQuery({
     name: 'permanent',
