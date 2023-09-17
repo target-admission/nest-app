@@ -15,6 +15,7 @@ import { SessionsModule as UserSessionsModule } from './users-sessions/sessions.
 // import { GraphQLModule } from '@nestjs/graphql';
 // import { ApolloDriver } from '@nestjs/apollo';
 // import { join } from 'path';
+import { SubjectsModule } from './subjects/subjects.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { SessionsModule as UserSessionsModule } from './users-sessions/sessions.
     AccesspointModule,
     RolesModule,
     PermissionsModule,
+    SubjectsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
