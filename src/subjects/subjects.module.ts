@@ -4,6 +4,6 @@ import { SubjectsController } from './subjects.controller';
 
 @Module({
   controllers: [SubjectsController],
-  providers: [SubjectsService]
+  providers: [SubjectsService],
 })
 export class SubjectsModule {}
