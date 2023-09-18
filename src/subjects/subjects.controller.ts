@@ -35,9 +35,14 @@ export class SubjectsController {
   }
 
   @Get()
-  @ApiQuery({})
-  findAll() {
-    return this.subjectsService.findAll();
+  @ApiQuery(TrashQuery)
+  @ApiQuery(ShowParanoidQuery)
+  @ApiQuery(SortQuery)
+  @ApiQuery(PageQuery)
+  @ApiQuery(LimitQuery)
+  @ApiQuery(SearchQuery)
+  findAll(@Query() query: IPaginationQuery) {
+    return this.subjectsService.findAll(query);
   }
 
   @Get(':id')
@@ -51,7 +56,21 @@ export class SubjectsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.subjectsService.remove(+id);
+  @ApiQuery({
+    name: 'permanent',
+    type: 'boolean',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'restore',
+    type: 'boolean',
+    required: false,
+  })
+  remove(
+    @Param('id') id: string,
+    @Query('permanent') permanent?: boolean,
+    @Query('restore') restore?: boolean,
+  ) {
+    return this.subjectsService.remove(+id, permanent, restore);
   }
 }

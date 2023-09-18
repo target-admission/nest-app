@@ -1,26 +1,110 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
+import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
+import Subject from './entities/subject.entity';
+import Pagination from 'src/utils/Pagination';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class SubjectsService {
-  create(createSubjectDto: CreateSubjectDto) {
-    return 'This action adds a new subject';
+  async create(createSubjectDto: CreateSubjectDto) {
+    const { subject_name, description, cover_picture } = createSubjectDto;
+
+    await Subject.create({
+      subject_name,
+      description,
+      cover_picture,
+    });
+    return {
+      statusCode: 201,
+      message: `${subject_name} registered as a subject successfully`,
+    };
   }
 
-  findAll() {
-    return `This action returns all subjects`;
+  async findAll(query: IPaginationQuery, subject_name?: string) {
+    const pagination = new Pagination(query);
+
+    const { limit, offset, paranoid, trash_query } =
+      pagination.get_attributes();
+
+    const search_ops = pagination.get_search_ops(['subject_name']);
+    return pagination.arrange(
+      await Subject.findAndCountAll({
+        where: {
+          [Op.or]: search_ops,
+          ...trash_query,
+        },
+        paranoid,
+        limit,
+        offset,
+      }),
+    );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} subject`;
+  async findOne(id: number) {
+    const subject = await Subject.findByPk(id, {
+      paranoid: false,
+    });
+
+    if (!subject) {
+      throw new NotFoundException(`Subject not found`);
+    }
+    return {
+      message: 'Subject fetched successfully',
+      data: subject,
+    };
   }
 
-  update(id: number, updateSubjectDto: UpdateSubjectDto) {
-    return `This action updates a #${id} subject`;
+  async update(id: number, updateSubjectDto: UpdateSubjectDto) {
+    const { subject_name, description, cover_picture } = updateSubjectDto;
+
+    const subject = await Subject.findByPk(id);
+    if (!subject) {
+      throw new NotFoundException(`Subject not found`);
+    }
+    await subject.update({
+      subject_name,
+      description,
+      cover_picture,
+    });
+    return {
+      message: 'Subject updated successfully',
+    };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} subject`;
+  async remove(id: number, permanent?: boolean, restore?: boolean) {
+    const subject = await Subject.findByPk(id, {
+      paranoid: false,
+    });
+
+    if (!subject) {
+      throw new NotFoundException(`Subject not found`);
+    }
+
+    if (permanent) {
+      await subject.destroy({ force: true });
+      return {
+        message: 'Subject deleted permanently',
+      };
+    } else if (restore) {
+      if (subject.deleted_at === null) {
+        throw new BadRequestException(`Subject not deleted`);
+      }
+      subject.restore();
+      return {
+        message: 'Subject restored successfully',
+      };
+    }
+
+    await subject.destroy();
+
+    return {
+      message: 'Subject deleted successfully',
+    };
   }
 }
