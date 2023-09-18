@@ -36,14 +36,22 @@ export class ChaptersController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'subject_id',
+    type: 'number',
+    required: false,
+  })
   @ApiQuery(TrashQuery)
   @ApiQuery(ShowParanoidQuery)
   @ApiQuery(SortQuery)
   @ApiQuery(PageQuery)
   @ApiQuery(LimitQuery)
   @ApiQuery(SearchQuery)
-  findAll(@Query() query: IPaginationQuery) {
-    return this.chaptersService.findAll(query);
+  findAll(
+    @Query() query: IPaginationQuery,
+    @Query('subject_id') subject_id?: number,
+  ) {
+    return this.chaptersService.findAll(query, subject_id);
   }
 
   @Get(':id')

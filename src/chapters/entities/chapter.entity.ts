@@ -24,7 +24,7 @@ class Chapter extends Model<Chapter> {
   'id': number;
 
   @Column
-  'chapter_name': string;
+  'name': string;
 
   @AllowNull
   @Column

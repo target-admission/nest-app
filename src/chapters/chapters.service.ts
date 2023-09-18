@@ -13,29 +13,34 @@ import { Op } from 'sequelize';
 @Injectable()
 export class ChaptersService {
   async create(createChapterDto: CreateChapterDto) {
-    const { chapter_name, description } = CreateChapterDto;
+    const { name, description, subject_id } = createChapterDto;
 
     await Chapter.create({
-      chapter_name,
+      name,
       description,
+      subject_id,
     });
     return {
       statusCode: 201,
-      message: `${chapter_name} registered as a chapter successfully`,
+      message: `${name} registered as a chapter successfully`,
     };
   }
 
-  async findAll(query: IPaginationQuery, _chapter_name?: string) {
+  async findAll(query: IPaginationQuery, subject_id?: number) {
     const pagination = new Pagination(query);
 
     const { limit, offset, paranoid, trash_query } =
       pagination.get_attributes();
 
-    const search_ops = pagination.get_search_ops(['chapter_name']);
+    const search_ops = pagination.get_search_ops(['name']);
+    const filters = pagination.format_filters({
+      subject_id,
+    });
     return pagination.arrange(
       await Chapter.findAndCountAll({
         where: {
           [Op.or]: search_ops,
+          ...filters,
           ...trash_query,
         },
         paranoid,
@@ -60,15 +65,16 @@ export class ChaptersService {
   }
 
   async update(id: number, updateChapterDto: UpdateChapterDto) {
-    const { chapter_name, description } = updateChapterDto;
+    const { name, description, subject_id } = updateChapterDto;
 
     const chapter = await Chapter.findByPk(id);
     if (!chapter) {
       throw new NotFoundException(`Chapter not found`);
     }
     await chapter.update({
-      chapter_name,
+      name,
       description,
+      subject_id,
     });
     return {
       message: 'Chapter updated successfully',
