@@ -4,8 +4,8 @@ export class CreateChapterDto {
   @ApiProperty({
     required: true,
   })
-  chapter_name: string;
+  'chapter_name': string;
 
   @ApiProperty()
-  description: string;
+  'description': string;
 }

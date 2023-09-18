@@ -1,11 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
+import Chapter from './entities/chapter.entity';
+import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
+import Pagination from 'src/utils/Pagination';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class ChaptersService {
-  create(createChapterDto: CreateChapterDto) {
-    return 'This action adds a new chapter';
+  async create(createChapterDto: CreateChapterDto) {
+    const {} = CreateChapterDto;
+
+    await Chapter.create({});
   }
 
   findAll() {
