@@ -16,6 +16,7 @@ import { SessionsModule as UserSessionsModule } from './users-sessions/sessions.
 // import { ApolloDriver } from '@nestjs/apollo';
 // import { join } from 'path';
 import { SubjectsModule } from './subjects/subjects.module';
+import { ChaptersModule } from './chapters/chapters.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { SubjectsModule } from './subjects/subjects.module';
     RolesModule,
     PermissionsModule,
     SubjectsModule,
+    ChaptersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
