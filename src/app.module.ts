@@ -17,6 +17,7 @@ import { SessionsModule as UserSessionsModule } from './users-sessions/sessions.
 // import { join } from 'path';
 import { SubjectsModule } from './subjects/subjects.module';
 import { ChaptersModule } from './chapters/chapters.module';
+import { TopicsModule } from './topics/topics.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { ChaptersModule } from './chapters/chapters.module';
     PermissionsModule,
     SubjectsModule,
     ChaptersModule,
+    TopicsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

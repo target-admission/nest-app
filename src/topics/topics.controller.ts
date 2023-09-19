@@ -9,10 +9,9 @@ import {
   HttpCode,
   Query,
 } from '@nestjs/common';
-import { ChaptersService } from './chapters.service';
-import { CreateChapterDto } from './dto/create-chapter.dto';
-import { UpdateChapterDto } from './dto/update-chapter.dto';
-
+import { TopicsService } from './topics.service';
+import { CreateTopicDto } from './dto/create-topic.dto';
+import { UpdateTopicDto } from './dto/update-topic.dto';
 import {
   IPaginationQuery,
   LimitQuery,
@@ -24,20 +23,20 @@ import {
 } from 'src/utils/Pagination/dto/query.dto';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('chapter')
-@Controller('chapters')
-export class ChaptersController {
-  constructor(private readonly chaptersService: ChaptersService) {}
+@ApiTags('topic')
+@Controller('topics')
+export class TopicsController {
+  constructor(private readonly topicsService: TopicsService) {}
 
   @Post()
   @HttpCode(201)
-  create(@Body() createChapterDto: CreateChapterDto) {
-    return this.chaptersService.create(createChapterDto);
+  create(@Body() createTopicDto: CreateTopicDto) {
+    return this.topicsService.create(createTopicDto);
   }
 
   @Get()
   @ApiQuery({
-    name: 'subject_id',
+    name: 'chapter_id',
     type: 'number',
     required: false,
   })
@@ -49,19 +48,19 @@ export class ChaptersController {
   @ApiQuery(SearchQuery)
   findAll(
     @Query() query: IPaginationQuery,
-    @Query('subject_id') subject_id?: number,
+    @Query('chapter_id') chapter_id?: number,
   ) {
-    return this.chaptersService.findAll(query, subject_id);
+    return this.topicsService.findAll(query, chapter_id);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.chaptersService.findOne(+id);
+    return this.topicsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateChapterDto: UpdateChapterDto) {
-    return this.chaptersService.update(+id, updateChapterDto);
+  update(@Param('id') id: string, @Body() updateTopicDto: UpdateTopicDto) {
+    return this.topicsService.update(+id, updateTopicDto);
   }
 
   @Delete(':id')
@@ -80,6 +79,6 @@ export class ChaptersController {
     @Query('permanent') permanent?: boolean,
     @Query('restore') restore?: boolean,
   ) {
-    return this.chaptersService.remove(+id, permanent, restore);
+    return this.topicsService.remove(+id, permanent, restore);
   }
 }

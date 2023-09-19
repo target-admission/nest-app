@@ -1,25 +1,23 @@
 import {
-  Model,
   Table,
   Column,
   PrimaryKey,
   AutoIncrement,
   DataType,
-  AllowNull,
-  CreatedAt,
-  UpdatedAt,
   DeletedAt,
-  ForeignKey,
+  UpdatedAt,
+  CreatedAt,
   BelongsTo,
-  HasMany,
+  AllowNull,
+  ForeignKey,
+  Model,
 } from 'sequelize-typescript';
-import Subject from 'src/subjects/entities/subject.entity';
-import Topic from 'src/topics/entities/topic.entity';
+import Chapter from 'src/chapters/entities/chapter.entity';
 
 @Table({
-  tableName: 'chapter',
+  tableName: 'topic',
 })
-class Chapter extends Model<Chapter> {
+class Topic extends Model<Topic> {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.BIGINT)
@@ -32,16 +30,13 @@ class Chapter extends Model<Chapter> {
   @Column
   'description': string;
 
-  @ForeignKey(() => Subject)
+  @ForeignKey(() => Chapter)
   @AllowNull
   @Column(DataType.BIGINT)
-  'subject_id': number;
+  'chapter_id': number;
 
-  @HasMany(() => Topic)
-  'topics': Topic[];
-
-  @BelongsTo(() => Subject)
-  'subject': Subject;
+  @BelongsTo(() => Chapter)
+  'chapter': Chapter;
 
   @CreatedAt
   @Column({ field: 'created_at' })
@@ -56,4 +51,4 @@ class Chapter extends Model<Chapter> {
   'deleted_at': Date;
 }
 
-export default Chapter;
+export default Topic;
