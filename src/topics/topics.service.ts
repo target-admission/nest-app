@@ -29,13 +29,15 @@ export class TopicsService {
   async findAll(query: IPaginationQuery, chapter_id?: number) {
     const pagination = new Pagination(query);
 
-    const { limit, offset, paranoid, trash_query } =
+    const { limit, offset, paranoid, trash_query, order } =
       pagination.get_attributes();
 
     const search_ops = pagination.get_search_ops(['name']);
+
     const filters = pagination.format_filters({
       chapter_id,
     });
+
     return pagination.arrange(
       await Topic.findAndCountAll({
         where: {
@@ -43,6 +45,7 @@ export class TopicsService {
           ...filters,
           ...trash_query,
         },
+        order,
         paranoid,
         limit,
         offset,

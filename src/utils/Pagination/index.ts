@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { Op, literal } from 'sequelize';
+import { Op, Order, literal } from 'sequelize';
 import { IPaginationQuery } from './dto/query.dto';
 
 class Pagination {
@@ -60,7 +60,7 @@ class Pagination {
     if (!this.sort) return [];
     literal_fields = literal_fields.concat(this.literal_fields);
 
-    return Array.from(this.sort, (s: string) =>
+    return Array.from(this.sort.split(' '), (s: string) =>
       s[0] === '-'
         ? [
             literal_fields.includes(s.replace('-', ''))
@@ -76,7 +76,7 @@ class Pagination {
     return {
       offset: this.skip,
       limit: this.limit,
-      order: this.order(literal_fields),
+      order: this.order(literal_fields) as Order,
       paranoid: this.show_paranoid,
       trash_query: this.trash_query,
       is_trash: this.is_trash,

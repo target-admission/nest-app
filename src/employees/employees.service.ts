@@ -74,7 +74,7 @@ export class EmployeesService {
     const pagination = new Pagination(query);
 
     // get query props
-    const { limit, offset, paranoid, trash_query } =
+    const { limit, offset, paranoid, trash_query, order } =
       pagination.get_attributes();
 
     // get search object
@@ -107,6 +107,7 @@ export class EmployeesService {
         attributes: {
           exclude: ['password', 'role_id'],
         },
+        order,
         limit,
         offset,
         paranoid,

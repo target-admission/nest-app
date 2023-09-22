@@ -26,19 +26,21 @@ export class SubjectsService {
     };
   }
 
-  async findAll(query: IPaginationQuery, subject_name?: string) {
+  async findAll(query: IPaginationQuery) {
     const pagination = new Pagination(query);
 
-    const { limit, offset, paranoid, trash_query } =
+    const { limit, offset, paranoid, trash_query, order } =
       pagination.get_attributes();
 
     const search_ops = pagination.get_search_ops(['subject_name']);
+
     return pagination.arrange(
       await Subject.findAndCountAll({
         where: {
           [Op.or]: search_ops,
           ...trash_query,
         },
+        order,
         paranoid,
         limit,
         offset,

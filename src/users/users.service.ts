@@ -15,7 +15,7 @@ export class UsersService {
     const pagination = new Pagination(query);
 
     // get query props
-    const { limit, offset, paranoid, trash_query } =
+    const { limit, offset, paranoid, trash_query, order } =
       pagination.get_attributes();
 
     // get search object
@@ -43,6 +43,7 @@ export class UsersService {
         attributes: {
           exclude: ['password'],
         },
+        order,
         limit,
         offset,
         paranoid,

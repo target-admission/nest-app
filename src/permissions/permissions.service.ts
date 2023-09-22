@@ -9,8 +9,6 @@ import { UpdatePermissionDto } from './dto/update-permission.dto';
 import Permission from './entities/permission.entity';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
 import Pagination from 'src/utils/Pagination';
-import { Op } from 'sequelize';
-import Role from 'src/roles/entities/role.entity';
 
 @Injectable()
 export class PermissionsService {
@@ -46,7 +44,7 @@ export class PermissionsService {
     const pagination = new Pagination(query);
 
     // get query props
-    const { limit, offset, paranoid, trash_query } =
+    const { limit, offset, paranoid, trash_query, order } =
       pagination.get_attributes();
 
     // get filter props
@@ -67,6 +65,7 @@ export class PermissionsService {
         //   attributes: ['id', 'name'],
         // },
         limit,
+        order,
         offset,
         paranoid,
       }),
