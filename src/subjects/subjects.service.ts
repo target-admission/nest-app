@@ -13,16 +13,16 @@ import { Op } from 'sequelize';
 @Injectable()
 export class SubjectsService {
   async create(createSubjectDto: CreateSubjectDto) {
-    const { subject_name, description, cover_picture } = createSubjectDto;
+    const { name, description, cover_picture } = createSubjectDto;
 
     await Subject.create({
-      subject_name,
+      name,
       description,
       cover_picture,
     });
     return {
       statusCode: 201,
-      message: `${subject_name} registered as a subject successfully`,
+      message: `${name} registered as a subject successfully`,
     };
   }
 
@@ -32,7 +32,7 @@ export class SubjectsService {
     const { limit, offset, paranoid, trash_query, order } =
       pagination.get_attributes();
 
-    const search_ops = pagination.get_search_ops(['subject_name']);
+    const search_ops = pagination.get_search_ops(['name']);
 
     return pagination.arrange(
       await Subject.findAndCountAll({
@@ -63,14 +63,14 @@ export class SubjectsService {
   }
 
   async update(id: number, updateSubjectDto: UpdateSubjectDto) {
-    const { subject_name, description, cover_picture } = updateSubjectDto;
+    const { name, description, cover_picture } = updateSubjectDto;
 
     const subject = await Subject.findByPk(id);
     if (!subject) {
       throw new NotFoundException(`Subject not found`);
     }
     await subject.update({
-      subject_name,
+      name,
       description,
       cover_picture,
     });

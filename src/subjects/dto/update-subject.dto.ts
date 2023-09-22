@@ -3,7 +3,7 @@ import { CreateSubjectDto } from './create-subject.dto';
 
 export class UpdateSubjectDto extends PartialType(CreateSubjectDto) {
   @ApiProperty()
-  'subject_name': string;
+  'name': string;
 
   @ApiProperty()
   'description': string;

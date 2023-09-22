@@ -24,7 +24,7 @@ import {
 } from 'src/utils/Pagination/dto/query.dto';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('chapter')
+@ApiTags('Chapters')
 @Controller('chapters')
 export class ChaptersController {
   constructor(private readonly chaptersService: ChaptersService) {}

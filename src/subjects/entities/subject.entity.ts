@@ -23,7 +23,7 @@ class Subject extends Model<Subject> {
   'id': number;
 
   @Column
-  'subject_name': string;
+  'name': string;
 
   @AllowNull
   @Column

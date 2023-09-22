@@ -4,7 +4,7 @@ export class CreateSubjectDto {
   @ApiProperty({
     required: true,
   })
-  'subject_name': string;
+  'name': string;
 
   @ApiProperty()
   'description': string;
