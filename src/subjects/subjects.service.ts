@@ -9,6 +9,9 @@ import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
 import Subject from './entities/subject.entity';
 import Pagination from 'src/utils/Pagination';
 import { Op } from 'sequelize';
+import Chapter from 'src/chapters/entities/chapter.entity';
+import sequelize from 'sequelize';
+import Topic from 'src/topics/entities/topic.entity';
 
 @Injectable()
 export class SubjectsService {
@@ -40,6 +43,22 @@ export class SubjectsService {
           [Op.or]: search_ops,
           ...trash_query,
         },
+        attributes: {
+          include: [
+            [
+              sequelize.literal(
+                `(SELECT COUNT(*) FROM chapter WHERE chapter.subject_id = Subject.id)`,
+              ),
+              'total_chapters',
+            ],
+            [
+              sequelize.literal(
+                '(SELECT COUNT(*) FROM topic WHERE topic.chapter_id IN (SELECT id FROM chapter WHERE chapter.subject_id = Subject.id))',
+              ),
+              'total_topics',
+            ],
+          ],
+        },
         order,
         paranoid,
         limit,
@@ -50,12 +69,29 @@ export class SubjectsService {
 
   async findOne(id: number) {
     const subject = await Subject.findByPk(id, {
+      attributes: {
+        include: [
+          [
+            sequelize.literal(
+              `(SELECT COUNT(*) FROM chapter WHERE chapter.subject_id = Subject.id)`,
+            ),
+            'total_chapters',
+          ],
+          [
+            sequelize.literal(
+              '(SELECT COUNT(*) FROM topic WHERE topic.chapter_id IN (SELECT id FROM chapter WHERE chapter.subject_id = Subject.id))',
+            ),
+            'total_topics',
+          ],
+        ],
+      },
       paranoid: false,
     });
 
     if (!subject) {
       throw new NotFoundException(`Subject not found`);
     }
+
     return {
       message: 'Subject fetched successfully',
       data: subject,

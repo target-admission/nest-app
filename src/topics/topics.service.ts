@@ -45,6 +45,18 @@ export class TopicsService {
           ...filters,
           ...trash_query,
         },
+        include: [
+          {
+            association: 'chapter',
+            attributes: ['id', 'name', 'description'],
+            include: [
+              {
+                association: 'subject',
+                attributes: ['id', 'name', 'cover_picture', 'description'],
+              },
+            ],
+          },
+        ],
         order,
         paranoid,
         limit,
@@ -55,6 +67,16 @@ export class TopicsService {
 
   async findOne(id: number) {
     const topic = await Topic.findByPk(id, {
+      include: [
+        {
+          association: 'chapter',
+          include: [
+            {
+              association: 'subject',
+            },
+          ],
+        },
+      ],
       paranoid: false,
     });
 

@@ -9,6 +9,7 @@ import Chapter from './entities/chapter.entity';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
 import Pagination from 'src/utils/Pagination';
 import { Op } from 'sequelize';
+import sequelize from 'sequelize';
 
 @Injectable()
 export class ChaptersService {
@@ -43,6 +44,21 @@ export class ChaptersService {
           ...filters,
           ...trash_query,
         },
+        include: [
+          {
+            association: 'subject',
+          },
+        ],
+        attributes: {
+          include: [
+            [
+              sequelize.literal(
+                `(SELECT COUNT(*) FROM topic WHERE topic.chapter_id = Chapter.id)`,
+              ),
+              'total_topics',
+            ],
+          ],
+        },
         order,
         paranoid,
         limit,
@@ -53,6 +69,21 @@ export class ChaptersService {
 
   async findOne(id: number) {
     const chapter = await Chapter.findByPk(id, {
+      include: [
+        {
+          association: 'subject',
+        },
+      ],
+      attributes: {
+        include: [
+          [
+            sequelize.literal(
+              `(SELECT COUNT(*) FROM topic WHERE topic.chapter_id = Chapter.id)`,
+            ),
+            'total_topics',
+          ],
+        ],
+      },
       paranoid: false,
     });
 
