@@ -29,7 +29,7 @@ export class ChaptersService {
   async findAll(query: IPaginationQuery, subject_id?: number) {
     const pagination = new Pagination(query);
 
-    const { limit, offset, paranoid, trash_query } =
+    const { limit, offset, paranoid, trash_query, order } =
       pagination.get_attributes();
 
     const search_ops = pagination.get_search_ops(['name']);
@@ -43,6 +43,7 @@ export class ChaptersService {
           ...filters,
           ...trash_query,
         },
+        order,
         paranoid,
         limit,
         offset,

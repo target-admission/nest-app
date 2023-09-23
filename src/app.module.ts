@@ -18,6 +18,11 @@ import { SessionsModule as UserSessionsModule } from './users-sessions/sessions.
 import { SubjectsModule } from './subjects/subjects.module';
 import { ChaptersModule } from './chapters/chapters.module';
 import { TopicsModule } from './topics/topics.module';
+import { QuestionBankModule } from './question-bank/question-bank.module';
+import { ExamsModule } from './exams/exams.module';
+import { QuestionsModule } from './questions/questions.module';
+import { AnswersModule } from './answers/answers.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -47,6 +52,11 @@ import { TopicsModule } from './topics/topics.module';
     SubjectsModule,
     ChaptersModule,
     TopicsModule,
+    QuestionBankModule,
+    ExamsModule,
+    QuestionsModule,
+    AnswersModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
