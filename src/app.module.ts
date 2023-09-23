@@ -23,6 +23,7 @@ import { ExamsModule } from './exams/exams.module';
 import { QuestionsModule } from './questions/questions.module';
 import { AnswersModule } from './answers/answers.module';
 import { CategoryModule } from './category/category.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { CategoryModule } from './category/category.module';
     QuestionsModule,
     AnswersModule,
     CategoryModule,
+    ReportsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
