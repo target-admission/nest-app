@@ -148,7 +148,7 @@ export class QuestionsService {
           as: 'linked_exams',
           include: [
             {
-              model: Question,
+              model: QuestionBank,
               as: 'question_bank',
             },
           ],
