@@ -16,4 +16,10 @@ export class UpdateQuestionDto extends PartialType(CreateQuestionDto) {
 
   @ApiProperty()
   solution_id: number;
+
+  @ApiProperty()
+  topic_id: number;
+
+  @ApiProperty()
+  category_id: number;
 }

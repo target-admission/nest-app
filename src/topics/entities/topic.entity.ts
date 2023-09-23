@@ -11,8 +11,10 @@ import {
   AllowNull,
   ForeignKey,
   Model,
+  HasMany,
 } from 'sequelize-typescript';
 import Chapter from 'src/chapters/entities/chapter.entity';
+import Question from 'src/questions/entities/question.entity';
 
 @Table({
   tableName: 'topic',
@@ -37,6 +39,9 @@ class Topic extends Model<Topic> {
 
   @BelongsTo(() => Chapter)
   'chapter': Chapter;
+
+  @HasMany(() => Question)
+  'questions': Question[];
 
   @CreatedAt
   @Column({ field: 'created_at' })

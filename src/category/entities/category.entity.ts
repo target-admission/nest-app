@@ -13,6 +13,7 @@ import {
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+import Question from 'src/questions/entities/question.entity';
 
 @Table({
   tableName: 'category',
@@ -44,6 +45,9 @@ class Category extends Model<Category> {
     as: 'children',
   })
   'children': Category[];
+
+  @HasMany(() => Question)
+  'questions': Question[];
 
   @CreatedAt
   @Column({ field: 'created_at' })
