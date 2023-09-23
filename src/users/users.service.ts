@@ -56,6 +56,7 @@ export class UsersService {
       attributes: {
         exclude: ['password'],
       },
+      paranoid: false,
     });
 
     if (!user) {

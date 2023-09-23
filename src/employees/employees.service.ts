@@ -125,6 +125,7 @@ export class EmployeesService {
       attributes: {
         exclude: ['password'],
       },
+      paranoid: false,
     });
 
     if (!employee) {
