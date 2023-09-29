@@ -22,6 +22,7 @@ export class ExamsService {
         is_archivable,
         live_datetime,
         negative_mark,
+        positive_mark,
         question_bank_id,
         type,
       } = createExamDto;
@@ -35,6 +36,7 @@ export class ExamsService {
         is_archivable,
         live_datetime,
         negative_mark,
+        positive_mark,
         question_bank_id,
         type,
       });
@@ -116,6 +118,7 @@ export class ExamsService {
         is_archivable,
         live_datetime,
         negative_mark,
+        positive_mark,
         question_bank_id,
         type,
       } = updateExamDto;
@@ -134,6 +137,7 @@ export class ExamsService {
         is_archivable,
         live_datetime,
         negative_mark,
+        positive_mark,
         question_bank_id,
         type,
       });

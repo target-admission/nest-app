@@ -15,6 +15,9 @@ export class CreateExamDto {
   @ApiProperty()
   'negative_mark': number;
 
+  @ApiProperty()
+  'positive_mark': number;
+
   @ApiProperty({
     required: true,
     enum: ['model', 'quick', 'mock', 'user-defined'],

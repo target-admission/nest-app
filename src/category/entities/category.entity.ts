@@ -33,7 +33,7 @@ class Category extends Model<Category> {
   'description': string;
 
   @ForeignKey(() => Category)
-  @AllowNull(false)
+  @AllowNull(true)
   @Column(DataType.BIGINT)
   'parent_id': number;
 
