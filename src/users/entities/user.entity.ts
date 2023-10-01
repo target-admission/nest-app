@@ -21,6 +21,7 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
 import Session from 'src/users-sessions/entities/user-session.entity';
+import Coupon from 'src/coupons/entities/coupon.entity';
 
 @Table({
   tableName: 'user',
@@ -100,8 +101,19 @@ class User extends Model<User> {
 
   // Relations
 
+  @HasMany(() => Coupon)
+  'coupons': Coupon[];
+
   @HasMany(() => Session)
   'sessions': Session[];
+
+  @ForeignKey(() => Coupon)
+  @AllowNull
+  @Column(DataType.BIGINT)
+  'coupon_id': number;
+
+  @BelongsTo(() => Coupon)
+  'coupon': Coupon;
 
   @CreatedAt
   @Column({ field: 'created_at' })

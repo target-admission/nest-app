@@ -19,7 +19,7 @@ import {
   SortQuery,
   TrashQuery,
 } from 'src/utils/Pagination/dto/query.dto';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Users')
 @Controller('users')
