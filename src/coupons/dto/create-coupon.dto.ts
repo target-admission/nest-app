@@ -13,7 +13,7 @@ export class CreateCouponDto {
   'amount': number;
 
   @ApiProperty()
-  'max_ussage': number;
+  'max_usage': number;
 
   @ApiProperty({
     required: true,

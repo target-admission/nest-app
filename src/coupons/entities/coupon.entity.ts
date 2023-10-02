@@ -32,6 +32,10 @@ class Coupon extends Model<Coupon> {
   @Column
   'description': string;
 
+  @AllowNull
+  @Column
+  'max_usage': number;
+
   @AllowNull(false)
   @Column(DataType.FLOAT)
   'amount': number;
@@ -40,16 +44,8 @@ class Coupon extends Model<Coupon> {
   @Column(DataType.ENUM('amount', 'percentage'))
   'type': string;
 
-  @HasMany(() => User)
-  'users': User[];
-
-  @ForeignKey(() => User)
-  @AllowNull
-  @Column(DataType.BIGINT)
-  'user_id': number;
-
-  @BelongsTo(() => User)
-  'user': User;
+  // @HasMany(() => User)
+  // 'issued_to': User[];
 
   @CreatedAt
   @Column({ field: 'created_at' })

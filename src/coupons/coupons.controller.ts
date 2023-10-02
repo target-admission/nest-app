@@ -35,14 +35,20 @@ export class CouponsController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'type',
+    enum: ['amount', 'percentage'],
+    type: 'string',
+    required: false,
+  })
   @ApiQuery(TrashQuery)
   @ApiQuery(ShowParanoidQuery)
   @ApiQuery(SortQuery)
   @ApiQuery(PageQuery)
   @ApiQuery(LimitQuery)
   @ApiQuery(SearchQuery)
-  findAll(@Query() query: IPaginationQuery) {
-    return this.couponsService.findAll();
+  findAll(@Query() query: IPaginationQuery, @Query('type') type?: string) {
+    return this.couponsService.findAll(query, type);
   }
 
   @Get(':id')
@@ -56,7 +62,21 @@ export class CouponsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.couponsService.remove(+id);
+  @ApiQuery({
+    name: 'permanent',
+    type: 'boolean',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'restore',
+    type: 'boolean',
+    required: false,
+  })
+  remove(
+    @Param('id') id: string,
+    @Query('permanent') permanent?: boolean,
+    @Query('restore') restore?: boolean,
+  ) {
+    return this.couponsService.remove(+id, permanent, restore);
   }
 }
