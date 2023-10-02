@@ -24,6 +24,7 @@ import { QuestionsModule } from './questions/questions.module';
 import { AnswersModule } from './answers/answers.module';
 import { CategoryModule } from './category/category.module';
 import { ReportsModule } from './reports/reports.module';
+import { CouponsModule } from './coupons/coupons.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { ReportsModule } from './reports/reports.module';
     AnswersModule,
     CategoryModule,
     ReportsModule,
+    CouponsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

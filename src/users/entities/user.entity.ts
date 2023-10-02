@@ -15,10 +15,13 @@ import {
   BeforeCreate,
   Unique,
   HasMany,
+  ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
 import Session from 'src/users-sessions/entities/user-session.entity';
+import Coupon from 'src/coupons/entities/coupon.entity';
 
 @Table({
   tableName: 'user',
@@ -66,7 +69,25 @@ class User extends Model<User> {
   @Column
   'address': string;
 
-  @Default(2)
+  @AllowNull
+  @Column
+  'referral_code': string;
+
+  @ForeignKey(() => User)
+  @AllowNull(true)
+  @Column(DataType.BIGINT)
+  'referred_by_id': number;
+
+  @BelongsTo(() => User)
+  'referred_by': User;
+
+  @HasMany(() => User, {
+    foreignKey: 'referred_by_id',
+    as: 'referred_to',
+  })
+  'referred_to': User[];
+
+  @Default(4)
   @Column
   'max_session': number;
 
@@ -79,6 +100,9 @@ class User extends Model<User> {
   'verified_at': Date;
 
   // Relations
+
+  // @HasMany(() => Coupon)
+  // 'issued_coupons': Coupon[];
 
   @HasMany(() => Session)
   'sessions': Session[];

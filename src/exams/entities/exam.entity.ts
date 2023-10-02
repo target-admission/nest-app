@@ -40,8 +40,13 @@ class Exam extends Model<Exam> {
   'duration': number;
 
   @AllowNull
-  @Column
+  @Column(DataType.FLOAT)
   'negative_mark': number;
+
+  @AllowNull
+  @Default(1)
+  @Column(DataType.FLOAT)
+  'positive_mark': number;
 
   @AllowNull(false)
   @Column(DataType.ENUM('model', 'quick', 'mock', 'user-defined'))

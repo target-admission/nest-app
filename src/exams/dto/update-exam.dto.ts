@@ -14,6 +14,9 @@ export class UpdateExamDto extends PartialType(CreateExamDto) {
   @ApiProperty()
   'negative_mark': number;
 
+  @ApiProperty()
+  'positive_mark': number;
+
   @ApiProperty({
     enum: ['model', 'quick', 'mock', 'user-defined'],
   })

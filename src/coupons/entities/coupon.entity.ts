@@ -1,7 +1,7 @@
 import {
-  Model,
   Table,
   Column,
+  Model,
   PrimaryKey,
   AutoIncrement,
   DataType,
@@ -9,39 +9,43 @@ import {
   CreatedAt,
   UpdatedAt,
   DeletedAt,
-  ForeignKey,
-  BelongsTo,
   HasMany,
+  BelongsTo,
+  ForeignKey,
 } from 'sequelize-typescript';
-import Subject from 'src/subjects/entities/subject.entity';
-import Topic from 'src/topics/entities/topic.entity';
+import User from 'src/users/entities/user.entity';
 
 @Table({
-  tableName: 'chapter',
+  tableName: 'coupon',
 })
-class Chapter extends Model<Chapter> {
+class Coupon extends Model<Coupon> {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.BIGINT)
   'id': number;
 
+  @AllowNull(false)
   @Column
-  'name': string;
+  'title': string;
 
   @AllowNull
   @Column
   'description': string;
 
-  @ForeignKey(() => Subject)
   @AllowNull
-  @Column(DataType.BIGINT)
-  'subject_id': number;
+  @Column
+  'max_usage': number;
 
-  @BelongsTo(() => Subject)
-  'subject': Subject;
+  @AllowNull(false)
+  @Column(DataType.FLOAT)
+  'amount': number;
 
-  @HasMany(() => Topic)
-  'topics': Topic[];
+  @AllowNull(false)
+  @Column(DataType.ENUM('amount', 'percentage'))
+  'type': string;
+
+  // @HasMany(() => User)
+  // 'issued_to': User[];
 
   @CreatedAt
   @Column({ field: 'created_at' })
@@ -56,4 +60,4 @@ class Chapter extends Model<Chapter> {
   'deleted_at': Date;
 }
 
-export default Chapter;
+export default Coupon;
