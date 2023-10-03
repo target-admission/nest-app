@@ -38,7 +38,7 @@ export class CreateEmployeeDto {
   dob?: Date;
 
   @ApiProperty({
-    default: 2,
+    default: 4,
     required: false,
   })
   max_session?: number;
