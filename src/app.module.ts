@@ -26,6 +26,7 @@ import { CategoryModule } from './category/category.module';
 import { ReportsModule } from './reports/reports.module';
 import { CouponsModule } from './coupons/coupons.module';
 import { PackagesModule } from './packages/packages.module';
+import { WalletsModule } from './wallets/wallets.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { PackagesModule } from './packages/packages.module';
     ReportsModule,
     CouponsModule,
     PackagesModule,
+    WalletsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
