@@ -41,7 +41,7 @@ export class WalletsController {
     @Query('user_id') user_id?: number,
     @Query('type') type?: string,
   ) {
-    return this.walletsService.findAll(query);
+    return this.walletsService.findAll(query, type, user_id);
   }
   @Get(':id')
   findOne(@Param('id') id: string) {

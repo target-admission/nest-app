@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UpdateWalletDto } from './dto/update-wallet.dto';
 import Wallet from './entities/wallet.entity';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
 import Pagination from 'src/utils/Pagination';
@@ -53,12 +52,4 @@ export class WalletsService {
       data: wallet,
     };
   }
-
-  // update(id: number, updateWalletDto: UpdateWalletDto) {
-  //   return `This action updates a #${id} wallet`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} wallet`;
-  // }
 }
