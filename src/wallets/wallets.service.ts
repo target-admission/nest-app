@@ -12,7 +12,7 @@ export class WalletsService {
 
     const filters = pagination.format_filters({
       type,
-      user_id: user,
+      user_id,
     });
 
     // get query props
