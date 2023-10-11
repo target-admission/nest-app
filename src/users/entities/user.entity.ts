@@ -22,6 +22,7 @@ import {
 const bcrypt = require('bcrypt');
 import Session from 'src/users-sessions/entities/user-session.entity';
 import Coupon from 'src/coupons/entities/coupon.entity';
+import Wallet from 'src/wallets/entities/wallet.entity';
 
 @Table({
   tableName: 'user',
@@ -106,6 +107,9 @@ class User extends Model<User> {
 
   @HasMany(() => Session)
   'sessions': Session[];
+
+  @HasMany(() => Wallet)
+  'wallet': Wallet[];
 
   @CreatedAt
   @Column({ field: 'created_at' })
