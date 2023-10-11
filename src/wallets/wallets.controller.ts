@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { WalletsService } from './wallets.service';
-//import { UpdateWalletDto } from './dto/update-wallet.dto';
 
 import {
   IPaginationQuery,
