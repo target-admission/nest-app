@@ -9,11 +9,11 @@ import {
   CreatedAt,
   UpdatedAt,
   DeletedAt,
-  HasMany,
-  BelongsTo,
-  ForeignKey,
+  // HasMany,
+  // BelongsTo,
+  // ForeignKey,
 } from 'sequelize-typescript';
-import User from 'src/users/entities/user.entity';
+//import User from 'src/users/entities/user.entity';
 
 @Table({
   tableName: 'coupon',
