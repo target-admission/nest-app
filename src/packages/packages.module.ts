@@ -4,6 +4,6 @@ import { PackagesController } from './packages.controller';
 
 @Module({
   controllers: [PackagesController],
-  providers: [PackagesService]
+  providers: [PackagesService],
 })
 export class PackagesModule {}
